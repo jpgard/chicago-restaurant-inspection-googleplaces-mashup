@@ -1,0 +1,81 @@
+{
+   "html_attributions" : [],
+   "results" : [
+      {
+         "formatted_address" : "622 Davis St, Evanston, IL 60201, United States",
+         "geometry" : {
+            "location" : {
+               "lat" : 42.0463259,
+               "lng" : -87.680959
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png",
+         "id" : "867babc404535f213fab67bbcc81b69bc608eaf6",
+         "name" : "Cheesie's Pub & Grub",
+         "opening_hours" : {
+            "open_now" : true,
+            "weekday_text" : []
+         },
+         "photos" : [
+            {
+               "height" : 949,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/108684400082972669136/photos\"\u003eJay Hawkinson\u003c/a\u003e"
+               ],
+               "photo_reference" : "CmRdAAAAc06OXun_ltVXVREc4xY4Zt1KtapJOCte3MlgN0hUiohH-EQ8rFHtP40b5NL9OeBRFHNpoN1n_UIJAg-_Ek_1Jisp3DTShKxaT-aR11c6-t8iUSRi8dHDJtFj71_zvuVLEhCUH-5LvesPqGQJextiTL_BGhShQ-IeC5BcusXcLZSNgFt3-I_OZA",
+               "width" : 1265
+            }
+         ],
+         "place_id" : "ChIJj3u0vA3QD4gRxRuZaAwKHXs",
+         "rating" : 3.8,
+         "reference" : "CnRnAAAAe3w-l5jHHXwT55JQFTQppKIJYhBlHj8SwWIlmoLvfZFIs61-HdyLhQiX0Zr2rg87dUe8BRd42uMYHdUqmKamOeMaPTR90sffKsOiaZUL15E2sR4EbzkZyPm6RfiSR0QyMcMJyqjwtOslbp_FMgNiEhIQjrkJ6SSjwKo2KUPe0tJsrhoU32pzztLB833zEU__IbTOd1tA_bU",
+         "types" : [
+            "meal_takeaway",
+            "restaurant",
+            "food",
+            "bar",
+            "point_of_interest",
+            "establishment"
+         ]
+      },
+      {
+         "formatted_address" : "958 W Belmont Ave, Chicago, IL 60657, United States",
+         "geometry" : {
+            "location" : {
+               "lat" : 41.9400603,
+               "lng" : -87.65383270000001
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/bar-71.png",
+         "id" : "b8fe3be17980fc4020a84adf2999c6a37b541e13",
+         "name" : "Cheesie's",
+         "opening_hours" : {
+            "open_now" : true,
+            "weekday_text" : []
+         },
+         "photos" : [
+            {
+               "height" : 648,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/104156642074501513045/photos\"\u003eWalkersix CHI\u003c/a\u003e"
+               ],
+               "photo_reference" : "CmRdAAAALLw4PgVj8-mruydi3TCukXFtFkRHlbSHqQ69-XJQNtUem05A5nOdVs3u7fNytnQE-tZFtsmWlDwjfFGP62-TG2Io3XHmXHEEIUuiunRGMB4dF0la3nRZp38zNI9a53tTEhDGF6UhvZmM6H-_H6XoaQpbGhSfbk2zN_56gmqhBpd28jXW1FsixA",
+               "width" : 1152
+            }
+         ],
+         "place_id" : "ChIJ6z5a_KvTD4gRHdSiXi6GRLU",
+         "price_level" : 1,
+         "rating" : 4.4,
+         "reference" : "CmRdAAAAvX-uVYWpyFnG2UHILlZqt4qxkebPlPC2eazH2qB3it44an04EdpxXeipIm7ehiwidBDj4JHIqploKSfDW5SbWNlr0piQKU8Us9XohBfLUMAv8nlJDltVZvJC0XHfPd6WEhDxGXx44U8Az-plzcFyWnjmGhRnOd1RwrVkJZ3jdXY55VT7kSGgEA",
+         "types" : [
+            "bar",
+            "meal_takeaway",
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ]
+      }
+   ],
+   "status" : "OK"
+}
