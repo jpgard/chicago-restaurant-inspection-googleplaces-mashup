@@ -1,7 +1,13 @@
-import requests, json, sys, re, csv
+'''
+Assembles dataset for analysis. Requires an inputfile formatted in a structure identical to the City of Chicago's Food Inspection dataset here: https://data.cityofchicago.org/Health-Human-Services/Food-Inspections/4ijn-s7e5
+
+Takes .csv file of food inspection data and Google API key as inputs, and generates a new JSON data structure of the relevant data elements from the Food Inspections dataset as well as the Google Places entry for that restaurant.
+
+To call, use 'python get_data.py Food_Inspections.csv output_file.json YOUR_GOOGLE_API_KEY'
+'''
+
+import requests, json, sys, re, csv, time
 from collections import defaultdict
-
-
 
 
 def get_reviews(placeid, api_key):
@@ -15,7 +21,6 @@ def get_reviews(placeid, api_key):
 	data = requests.get(api_url)
 	output = {}
 	rjson = data.json()
-
 	data_elements = ['rating', 'website', 'formatted_phone_number', 'user_ratings_total']
 
 	for e in data_elements:
@@ -39,7 +44,6 @@ def get_reviews(placeid, api_key):
 def place_search_for_id(api_key, query, latitude, longitude):
 	'''
 	Finds Google place ID using name, latitude, and longitude. This place id is needed to search for reviews and other information in Google Places.
-
 	Adjust parameters below as necessary.
 	'''
 
@@ -48,8 +52,8 @@ def place_search_for_id(api_key, query, latitude, longitude):
 	radius = '1000' #radius, in meters, to search around lat & long -- helps to avoid restaurants w/duplicate names
 	api_url = baseurl +  '&query=' + query + '&location' + location + '&radius' + radius + '&key=' + api_key
 	data = requests.get(api_url)
-
 	rjson = data.json()
+
 	try: 
 		place_id = rjson['results'][0]['place_id']
 	except IndexError:
@@ -60,35 +64,46 @@ def place_search_for_id(api_key, query, latitude, longitude):
 def make_data(infile):
 	'''
 	Reads data from Chicago Food Inspections csv file and organizes into dictionary.
+	Note: this only records the most recent inspection for each restaurant. This will produce a final list of approximately 21,520 restaurants (as of 2/22/2016).
 	'''
 
 	data = defaultdict(dict)
 
 	rawdata = open(infile)
 	lines = csv.reader(rawdata)
+	next(lines)
 
 	for line in lines:
-		
-		try:
-			
 
-			inspection_id = line[0]
+		try:	
 			
-			#create dictionary with inspection id as key
-			data[inspection_id]['name'] = line[2]
-			data[inspection_id]['facility_type'] = line[4]
-			data[inspection_id]['risk'] = re.findall(r'\d+', line[5])
-			data[inspection_id]['address'] = line[6]
-			city = line[7]
-			# state = line[8] no state needed -- all in Illinios
-			data[inspection_id]['ZIP'] = line[9]
-			data[inspection_id]['inspection_date'] = line[10]
-			data[inspection_id]['inspection_type'] = line[11]
-			data[inspection_id]['results'] = line[12]
-			data[inspection_id]['violationstext'] = line[13] #note: this is raw text; may want to split into list of separate violations (they are a numbered list--numbered by rule?)
-			data[inspection_id]['lat'] = line[14]
-			data[inspection_id]['long'] = line[15]
+			#create dictionary with restaurant name as key
+			restaurant_name = line[2]
+			inspection_date = time.strptime(line[10], "%m/%d/%Y")
+			
+			#check if this is newest or first entry; if it is, add to data; otherwise, do nothing
+			if (not data[restaurant_name]) or (data[restaurant_name]['inspection_date'] < inspection_date):
+
+				data[restaurant_name]['inspection_date'] = inspection_date
+				data[restaurant_name]['inspection_id'] = line[0]
+				data[restaurant_name]['facility_type'] = line[4]
+				data[restaurant_name]['risk'] = re.findall(r'\d+', line[5])
+				data[restaurant_name]['address'] = line[6]
+				city = line[7]
+				# state = line[8] no state needed -- all in Illinios
+				data[restaurant_name]['ZIP'] = line[9]
+				data[restaurant_name]['inspection_type'] = line[11]
+				data[restaurant_name]['results'] = line[12]
+				data[restaurant_name]['violationstext'] = line[13] #note: this is raw text; may want to split into list of separate violations (they are a numbered list--numbered by rule?)
+				data[restaurant_name]['lat'] = line[14]
+				data[restaurant_name]['long'] = line[15]
+
 		except IndexError:
+
+			print 'excluding line: \n'
+			print line
+
+		except TypeError:
 			print 'excluding line: \n'
 			print line
 
@@ -108,15 +123,11 @@ def reviewsToData(data, api_key):
 		id = place_search_for_id(api_key, item[1]['name'], item[1]['lat'], item[1]['long'])
 
 		if id:
-			print "%s - Building data for %s ID: %s" % (counter, item[1]['name'], id)
 
-			# try: 
+			print "%s - Building data for %s ID: %s" % (counter, item[1]['name'], id)
 			review_data = get_reviews(id, api_key)
 			data[item[0]].update(review_data)
-			# import ipdb; ipdb.set_trace()
-
-			# except KeyError:
-			# 	print 'No reviews for %s' % (item[1]['name'])
+			
 
 		counter += 1
 
@@ -127,7 +138,8 @@ def main():
 	infile = sys.argv[1]
 	outfile = sys.argv[2]
 	api_key = sys.argv[3]
-	data = make_data(infile)	
+	data = make_data(infile)
+	import ipdb; ipdb.set_trace()	
 	data = reviewsToData(data, api_key)
 
 	with open(outfile, 'w') as fp:
