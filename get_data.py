@@ -120,15 +120,14 @@ def reviewsToData(data, api_key):
 
 	for item in data.items():
 		
-		id = place_search_for_id(api_key, item[1]['name'], item[1]['lat'], item[1]['long'])
+		id = place_search_for_id(api_key, item[0], item[1]['lat'], item[1]['long'])
 
 		if id:
 
-			print "%s - Building data for %s ID: %s" % (counter, item[1]['name'], id)
+			print "%s - Building data for %s ID: %s" % (counter, item[0], id)
 			review_data = get_reviews(id, api_key)
 			data[item[0]].update(review_data)
 			
-
 		counter += 1
 
 	return data
@@ -138,8 +137,7 @@ def main():
 	infile = sys.argv[1]
 	outfile = sys.argv[2]
 	api_key = sys.argv[3]
-	data = make_data(infile)
-	import ipdb; ipdb.set_trace()	
+	data = make_data(infile)	
 	data = reviewsToData(data, api_key)
 
 	with open(outfile, 'w') as fp:
@@ -148,7 +146,3 @@ def main():
 
 if __name__ == '__main__':
 	main()
-
-
-
-
