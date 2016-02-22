@@ -4,22 +4,34 @@ from collections import defaultdict
 
 
 
-def get_reviews(placeid):
+def get_reviews(placeid, api_key):
 	'''
-	Fetches reviews using Google Places API, returning a list of reviews. 
+	Fetches reviews using Google Places API, returning a dictionary of data from the google places entry including all of the elements in data_elements, plus n_photos (number of photos), . 
 
 	Note: not all restaurants have reviews. Google limits the output to a maximum of five reviews.
 	'''
 	baseurl = 'https://maps.googleapis.com/maps/api/place/details/json?' 
 	api_url = baseurl + 'placeid=' + placeid + '&key=' + api_key
 	data = requests.get(api_url)
-	output = []
+	output = {}
 	rjson = data.json()
 
-	reviews = rjson['result']['reviews']
+	data_elements = ['rating', 'website', 'formatted_phone_number', 'user_ratings_total']
 
-	for review in reviews:
-		output.append((review['rating'], review['text']))
+	for e in data_elements:
+		output[e] = rjson['result'].get(e)
+
+	try: output['n_photos'] = len(rjson['result'].get('photos'))
+	except TypeError: output['n_photos'] = 0
+
+	if rjson['result'].get('reviews'):
+		reviews_raw = rjson['result'].get('reviews')
+		
+		reviewtuples = []
+		for review in reviews_raw:
+			reviewtuples.append((review['rating'], review['text'], review['time']))
+		output['reviews'] = reviewtuples
+
 
 	return output
 
@@ -84,7 +96,7 @@ def make_data(infile):
 
 
 
-def reviewsToData(data):
+def reviewsToData(data, api_key):
 	'''
 	takes dictionary of places as input in format produced by make_data; looks up Google Places reviews and adds them to dictionary entry for that place in data.
 	'''
@@ -98,12 +110,14 @@ def reviewsToData(data):
 		if id:
 			print "%s - Building data for %s ID: %s" % (counter, item[1]['name'], id)
 
-			try: 
-				reviews = get_reviews(id)
-				data[item[0]]['reviews'] = reviews
-			except KeyError:
-				print 'No reviews for %s' % (item[1]['name'])
-				#continue
+			# try: 
+			review_data = get_reviews(id, api_key)
+			data[item[0]].update(review_data)
+			# import ipdb; ipdb.set_trace()
+
+			# except KeyError:
+			# 	print 'No reviews for %s' % (item[1]['name'])
+
 		counter += 1
 
 	return data
@@ -111,37 +125,13 @@ def reviewsToData(data):
 def main():
 	
 	infile = sys.argv[1]
-
 	outfile = sys.argv[2]
-
 	api_key = sys.argv[3]
-
-
-
-	data = make_data(infile)
-	
-	data = reviewsToData(data)
+	data = make_data(infile)	
+	data = reviewsToData(data, api_key)
 
 	with open(outfile, 'w') as fp:
 		json.dump(data, fp)
-
-
-    # TO READ DATA:
-
-    # with open('data.json', 'r') as fp:
-    # 	data = json.load(fp)
-
-
-	# testid = place_search_for_id("CHEESIES PUB & GRUB", '41.94002724', '-87.65373273')
-
-	# print "ID: " + testid
-	# print "REVIEWS: "
-	# for item in get_reviews(testid):
-	# 	print item
-
-
-
-
 
 
 if __name__ == '__main__':
