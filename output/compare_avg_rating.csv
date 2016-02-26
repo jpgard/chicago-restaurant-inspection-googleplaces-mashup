@@ -1,0 +1,8 @@
+Result, n_reviews, total_stars, avg_rating 
+No Entry, 83, 337.6, 4.06746987952 
+Out of Business, 3794, 15447.7, 4.07161307327 
+Not Ready, 7, 29.0, 4.14285714286 
+Pass w/ Conditions, 764, 3105.2, 4.06439790576 
+Pass, 5412, 22244.5, 4.110218034 
+Fail, 201, 821.7, 4.08805970149 
+Business Not Located, 9, 37.2, 4.13333333333 

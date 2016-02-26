@@ -1,0 +1,8 @@
+Result, Num_result, Num_valid_websites, Valid_website_rates 
+No Entry, 167, 103, 0.616766467066 
+Out of Business, 7382, 4568, 0.618802492549 
+Not Ready, 13, 9, 0.692307692308 
+Pass w/ Conditions, 1169, 881, 0.753635585971 
+Pass, 9531, 6825, 0.716084356311 
+Fail, 374, 275, 0.735294117647 
+Business Not Located, 16, 12, 0.75 

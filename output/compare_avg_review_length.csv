@@ -1,0 +1,8 @@
+Result, n_reviews, n_tokens, avg_review_length 
+No Entry, 506, 27684, 54.7114624506 
+Out of Business, 22826, 1210820, 53.0456496977 
+Not Ready, 46, 2855, 62.0652173913 
+Pass w/ Conditions, 4403, 239826, 54.4687712923 
+Pass, 32076, 1673833, 52.1833458037 
+Fail, 1209, 63969, 52.9106699752 
+Business Not Located, 53, 2544, 48.0 
