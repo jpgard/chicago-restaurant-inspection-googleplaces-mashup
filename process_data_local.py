@@ -20,7 +20,6 @@ def filter_reviewed_only(data):
 	'''
 	Takes data as input, returns data dictionary with only restaurants with google places/review data.
 	'''
-
 	newdata = {}
 
 	for each in data.items():
@@ -30,13 +29,11 @@ def filter_reviewed_only(data):
 
 	return newdata
 
-
 def compare_n_photos(data):
 
 	photo_counts = defaultdict(int)
 	result_categories = set()
 	output = []
-
 
 	for each in data.items():
 
@@ -46,7 +43,6 @@ def compare_n_photos(data):
 		photo_counts[results + '_counts'] += 1
 		photo_counts[results + '_photos'] += n_photos
 		result_categories.add(results)
-
 
 	for result in result_categories:
 		t = (result, photo_counts[result + '_counts'], photo_counts[result + '_photos'], float(photo_counts[result + '_photos'])/float(photo_counts[result + '_counts']))
@@ -97,7 +93,6 @@ def has_phone(data):
 
 	return output
 
-
 def avg_rating(data):
 	rating_totals = defaultdict(int)
 	result_categories = set()
@@ -117,7 +112,6 @@ def avg_rating(data):
 		output.append(t)
 
 	return output
-
 
 def avg_review_length(data):
 	review_totals = defaultdict(int)
@@ -143,7 +137,6 @@ def avg_review_length(data):
 		output.append(t)
 
 	return output
-
 
 def avg_review_vaderSentiment(data):
 	
@@ -174,14 +167,12 @@ def avg_review_vaderSentiment(data):
 
 	return output
 
-
 def max_review_vaderSentiment(data, n, min_length):
 
 	vader_reviews = {}
 	
 	pos_reviews = []
 	neg_reviews = []
-
 
 	for each in data.items():
 
@@ -197,12 +188,7 @@ def max_review_vaderSentiment(data, n, min_length):
 	top_neg = sorted(vader_reviews.items(), key = lambda x: x[1][0], reverse = True)[0:n+1]
 	top_pos = sorted(vader_reviews.items(), key = lambda x: x[1][1], reverse = True)[0:n+1]
 
-
-
-
-
 	return top_pos, top_neg
-
 
 def tf_idf(data, n):
 
@@ -329,9 +315,6 @@ def tf_idf(data, n):
 	return output
 	# import ipdb; ipdb.set_trace() 
 
-
-
-
 def write_output(data, headers, outfile):
 	'''
 	Takes a list of tuples (data) and list of headers (headers) and writes them to a csv
@@ -343,8 +326,6 @@ def write_output(data, headers, outfile):
 		line = ', '.join(str(i) for i in item) + ' \n'
 		outfile.write(line)
 	outfile.close()
-
-
 
 def main(indata):
 	indata = open(indata, 'r')
@@ -386,8 +367,6 @@ def main(indata):
 			f.write(i[0] + '\n')
 			f.write(str([(y[0], y[1])  for y in i[1]]))
 			f.write('\n')
-
-
 
 if __name__ == '__main__':
 	main('final_data.json')
